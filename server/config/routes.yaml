@@ -1,0 +1,6 @@
+#index:
+#    path: /
+#    defaults: { _controller: 'App\Controller\DefaultController::index' }
+api:
+  path: /api/apartments
+  controller: App\Controller\Api\LuckyController::run

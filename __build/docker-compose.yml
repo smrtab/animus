@@ -1,0 +1,46 @@
+version: '3'
+services:
+  nginx:
+    image: smrtab/animus:nginx
+    build:
+        context: ../
+        dockerfile: __build/web.dockerfile
+    container_name: animus_nginx
+    volumes:
+        - ../server:/animus/server
+        - ../client:/animus/client
+        - ../logs/nginx:/var/log/nginx
+    ports:
+     - "80:80"
+    links:
+     - php
+    depends_on:
+     - php
+  php:
+    image: smrtab/animus:php
+    build:
+        context: ../
+        dockerfile: __build/php.dockerfile
+    container_name: animus_php
+    volumes:
+        - ../server:/animus/server
+        - ../client:/animus/client
+        - ../logs/app:/animus/server/log
+    links:
+     - db
+  db:
+    image: smrtab/animus:db
+    build:
+        context: ../
+        dockerfile: __build/db.dockerfile
+    environment:
+      - "POSTGRES_USER=animus"
+      - "POSTGRES_PASSWORD=12345"
+    container_name: animus_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data    
+    ports:
+     - "5444:5432"
+     
+volumes:
+  pgdata:     
