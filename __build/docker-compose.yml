@@ -1,4 +1,4 @@
-version: '3'
+﻿version: '3'
 services:
   nginx:
     image: smrtab/animus:nginx
@@ -25,7 +25,7 @@ services:
     volumes:
         - ../server:/animus/server
         - ../client:/animus/client
-        - ../logs/app:/animus/server/log
+        - ../logs/app:/animus/server/var/logs
     links:
      - db
   db:
@@ -33,9 +33,6 @@ services:
     build:
         context: ../
         dockerfile: __build/db.dockerfile
-    environment:
-      - "POSTGRES_USER=animus"
-      - "POSTGRES_PASSWORD=12345"
     container_name: animus_db
     volumes:
       - pgdata:/var/lib/postgresql/data    

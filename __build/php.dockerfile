@@ -3,6 +3,9 @@ FROM php:7.1-fpm
 #Own PHP config
 COPY ./__build/php.ini /usr/local/etc/php
 
+COPY ./__build/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 EXPOSE 9000
 
 # Install required

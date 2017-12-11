@@ -3,7 +3,9 @@ npm_version:=$(shell npm -v)
 timeStamp:=$(shell date +%Y%m%d%H%M%S)
 
 
-.PHONY: install build archive test clean
+.PHONY: show install build composer docker-compose
+
+all: show install build composer docker-compose
 
 show:
 		@ echo Timestamp: "$(timeStamp)"
@@ -11,25 +13,17 @@ show:
 		@ echo npm_version: $(npm_version)
 
 install:
-		@ npm install
+		@ echo "npm  install"
+		@ cd source; npm install
 
 build:
-		echo "building in production mode"
-		@ ng build --prod -op ../client
-
-archive:
-		@ tar -czvf client-$(timeStamp).tar.gz" ../client
-
-test:
-		echo "test the app"
-		@ npm run test
-
-clean:
-		echo "cleaning the dist directory"
-		@ rm -rf dist
-		@ rm -rf dist.tar.gz
-
-INFO := @bash -c '\
-  printf $(YELLOW); \
-  echo "=> $$1"; \
-  printf $(NC)' SOME_VALUE
+		@ echo "building in production mode"
+		@ cd source; ng build --prod -op ../client
+		
+composer:
+		@ echo "run composer"
+		@ cd server; composer install		
+		
+docker-compose:
+		@ echo "run docker-compose"
+		@ cd __build; docker-compose up -d

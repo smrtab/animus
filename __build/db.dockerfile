@@ -1,1 +1,4 @@
 FROM postgres
+ENV POSTGRES_DB=animus \
+    POSTGRES_USER=animus \
+    POSTGRES_PASSWORD=12345
