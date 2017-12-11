@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Apartment } from '../apartments/apartment';
+import { Apartment } from '../models/apartment';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
 
@@ -13,11 +13,15 @@ const httpOptions = {
 export class ApartmentService {
 
   private url = 'api/apartments';
+  private addUrl = 'api/apartment/add';
 
   constructor(private http: HttpClient) {}
 
   getApartments(): Observable<Apartment[]> {
-    return this.http.get<Apartment[]>(this.url);
+    return this.http.get<Apartment[]>(this.url).pipe(
+        tap(_ => this.log('fetched apartments')),
+        catchError(this.handleError<Apartment[]>('getApartments'))
+    );
   }
 
   getApartment(id: number): Observable<Apartment> {
@@ -36,9 +40,9 @@ export class ApartmentService {
   }
 
   addApartment(apartment: Apartment): Observable<Apartment> {
-    return this.http.post<Apartment>(this.url, apartment, httpOptions).pipe(
-        tap((apartment: Apartment) => this.log('added apartment w/ id=${hero.id}')),
-        catchError(this.handleError<Apartment>('addApartment'))
+    return this.http.post<Apartment>(this.addUrl, apartment, httpOptions).pipe(
+        tap(_ => this.log('add apartment')),
+        catchError(this.handleError<Apartment>('updateApartment'))
     );
   }
 

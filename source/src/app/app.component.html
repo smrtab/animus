@@ -1,5 +1,25 @@
 <div id="wrapper">
     <h1>{{ title }}!</h1>
-    <app-apartments></app-apartments>
+
+    <nav class="nav nav-tabs" id="myTab" role="tablist">
+        <a class="nav-item nav-link active" id="nav-list-tab" data-toggle="tab" href="#nav-list" role="tab" aria-controls="nav-list" aria-selected="true">List</a>
+        <a class="nav-item nav-link" id="nav-add-tab" data-toggle="tab" href="#nav-add" role="tab" aria-controls="nav-add" aria-selected="false">Add item</a>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-list" role="tabpanel" aria-labelledby="nav-list-tab">
+
+            <h3>List</h3>
+
+            <app-apartment-list></app-apartment-list>
+
+        </div>
+        <div class="tab-pane fade" id="nav-add" role="tabpanel" aria-labelledby="nav-add-tab">
+
+            <h3>Add item</h3>
+
+            <app-apartment-add></app-apartment-add>
+        </div>
+    </div>
+
 </div>
 

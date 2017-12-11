@@ -27,3 +27,4 @@ composer:
 docker-compose:
 		@ echo "run docker-compose"
 		@ cd __build; docker-compose up -d
+		@ cd __build; docker-compose exec php php bin/console --no-interaction doctrine:migration:migrate

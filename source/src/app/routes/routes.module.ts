@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { ApartmentsComponent }  from '../apartments/apartments.component';
+import { ApartmentListComponent }  from '../apartment-list/apartment-list.component';
+import { ApartmentShowComponent }  from '../apartment-show/apartment-show.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/apartments', pathMatch: 'full' },
-  { path: 'apartments', component: ApartmentsComponent }
+  { path: '', redirectTo: '/', pathMatch: 'full' },
+  { path: 'apartments', component: ApartmentListComponent },
+  { path: 'apartment/show', component: ApartmentShowComponent }
 ];
 
 @NgModule({

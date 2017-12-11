@@ -38,7 +38,7 @@ class ApiController extends FOSRestController
     }
 
     /**
-     * @Rest\Post("api/apartment")
+     * @Rest\Post("api/apartment/add")
      */
     public function setApartmentAction(Request $request)
     {

@@ -1,5 +1,5 @@
 export interface Apartment {
-    id: number;
+    id?: number;
     move_in_date: Date;
     street: string;
     post_code: number;

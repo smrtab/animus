@@ -1,0 +1,12 @@
+<div *ngIf="apartments;then list else empty_list"></div>
+
+<ng-template #list>
+  <ul class="apartment-list">
+    <li *ngFor="let apartment of apartments" (click)="onSelect(apartment)">
+      <span class="badge">{{apartment.id}}</span> {{apartment.street}}
+    </li>
+  </ul>
+</ng-template>
+<ng-template #empty_list>
+  List is yet empty
+</ng-template>
