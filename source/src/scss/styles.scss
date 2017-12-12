@@ -1,17 +1,5 @@
-@import
-  '~bootstrap/scss/functions',
-  '~bootstrap/scss/variables',
-  '~bootstrap/scss/mixins',
-  '~bootstrap/scss/print',
-  '~bootstrap/scss/reboot',
-  '~bootstrap/scss/grid',
-  '~bootstrap/scss/forms',
-  '~bootstrap/scss/type';
-
-@import url('https://fonts.googleapis.com/css?family=PT+Sans');
-@import url('https://fonts.googleapis.com/css?family=Noto+Serif');
-
-@import '~scss/__variables';
+@import '~scss/mixins';
+@import '~scss/variables';
 
 html {
   height: 100%;
@@ -19,11 +7,10 @@ html {
 
 body {
   position: relative;
-  margin: 0;
+  margin: 0 !important;
   min-height: 100%;
-  background-color: $silver;
+  background-color: $light_blue !important;
 
-  font-family: $ptr;
   font-style: normal;
 
   -webkit-font-smoothing: subpixel-antialiased !important;
@@ -51,4 +38,5 @@ a:hover {
   padding-bottom: 180px!important;
   margin: 0 auto;
   background-color: white;
+  @include border-radius(5px);
 }

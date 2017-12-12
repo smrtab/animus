@@ -1,0 +1,9 @@
+.container {
+  .form-control {
+    .ng-invalid {
+      border-color: maroon;
+      color: white;
+      background-color: red;
+    }
+  }
+}

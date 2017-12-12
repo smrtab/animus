@@ -1,0 +1,14 @@
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  border-radius: $radius;
+}
+
+@mixin clicker($color) {
+  @include border-radius(20px);
+  color: $color;
+  padding:5px 25px;
+  border: 2px solid $color;
+  text-decoration: none;
+}

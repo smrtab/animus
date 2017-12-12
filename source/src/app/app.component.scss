@@ -1,0 +1,20 @@
+@import "~scss/variables";
+
+header {
+  display: block;
+  background-color: $deep_blue;
+  text-align: center;
+  color: white;
+  line-height: 120px;
+  overflow: hidden;
+}
+
+#add_appartment {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+  background-color: $deep_blue;
+  text-align: center;
+  padding: 10px 0;
+}

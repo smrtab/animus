@@ -1,25 +1,30 @@
-<div id="wrapper">
+<header>
     <h1>{{ title }}!</h1>
+</header>
 
-    <nav class="nav nav-tabs" id="myTab" role="tablist">
-        <a class="nav-item nav-link active" id="nav-list-tab" data-toggle="tab" href="#nav-list" role="tab" aria-controls="nav-list" aria-selected="true">List</a>
-        <a class="nav-item nav-link" id="nav-add-tab" data-toggle="tab" href="#nav-add" role="tab" aria-controls="nav-add" aria-selected="false">Add item</a>
-    </nav>
-    <div class="tab-content" id="nav-tabContent">
-        <div class="tab-pane fade show active" id="nav-list" role="tabpanel" aria-labelledby="nav-list-tab">
+<section id="wrapper">
+    <app-apartment-list></app-apartment-list>
+</section>
 
-            <h3>List</h3>
+<section id="add_appartment">
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#add_appartment_modal">Add</button>
+</section>
 
-            <app-apartment-list></app-apartment-list>
+<!-- Modal -->
+<div id="add_appartment_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
 
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add new apartment</h4>
+            </div>
+            <div class="modal-body">
+                <app-apartment-add></app-apartment-add>
+            </div>
         </div>
-        <div class="tab-pane fade" id="nav-add" role="tabpanel" aria-labelledby="nav-add-tab">
 
-            <h3>Add item</h3>
-
-            <app-apartment-add></app-apartment-add>
-        </div>
     </div>
-
 </div>
 

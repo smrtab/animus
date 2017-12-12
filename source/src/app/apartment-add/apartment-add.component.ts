@@ -62,8 +62,9 @@ export class ApartmentAddComponent implements OnInit {
 
     return apartment;
   }
+
   onSubmit() {
     this.apartment = this.create();
-    this.apartmentService.addApartment(this.apartment).subscribe();
+    this.apartmentService.addApartment(this.apartment);
   }
 }

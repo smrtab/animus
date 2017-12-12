@@ -11,6 +11,7 @@ import { ApartmentShowComponent } from './apartment-show/apartment-show.componen
 import { ApartmentAddComponent } from './apartment-add/apartment-add.component';
 
 import { RoutesModule } from './routes/routes.module';
+
 import { ApartmentService } from './services/apartment.service';
 
 
@@ -28,7 +29,9 @@ import { ApartmentService } from './services/apartment.service';
 	FormsModule,
     ReactiveFormsModule
   ],
-  providers: [ApartmentService],
+  providers: [
+      ApartmentService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

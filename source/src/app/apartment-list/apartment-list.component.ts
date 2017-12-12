@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Apartment } from '../models/apartment';
 import { ApartmentService } from '../services/apartment.service';
+import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'app-apartment-list',
@@ -10,9 +11,9 @@ import { ApartmentService } from '../services/apartment.service';
 })
 export class ApartmentListComponent implements OnInit {
 
-  apartments: Apartment[];
+  apartments: Observable<Apartment[]>;
 
-  constructor(private apartmentService: ApartmentService,
+  constructor(public apartmentService: ApartmentService,
               private router: Router) {}
 
   ngOnInit() {
@@ -20,8 +21,7 @@ export class ApartmentListComponent implements OnInit {
   }
 
   getApartments(): void {
-    this.apartmentService.getApartments()
-        .subscribe(apartments => this.apartments = apartments);
+    this.apartmentService.getApartments(true);
   }
 
   onSelect(apartment: Apartment): void {

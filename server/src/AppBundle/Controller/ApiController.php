@@ -9,6 +9,7 @@ use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\View\View;
+use AppBundle\Entity\Apartment;
 
 class ApiController extends FOSRestController
 {
@@ -42,15 +43,21 @@ class ApiController extends FOSRestController
      */
     public function setApartmentAction(Request $request)
     {
+
+        $em = $this->getDoctrine()->getManager();
+
         $apartment = new Apartment();
-        $apartment->setMoveInDate($request->get('move_in_date'));
+        $apartment->setMoveInDate(new \DateTime($request->get('move_in_date')));
         $apartment->setStreet($request->get('street'));
         $apartment->setPostCode($request->get('post_code'));
         $apartment->setTown($request->get('town'));
         $apartment->setCountry($request->get('country'));
         $apartment->setEmail($request->get('email'));
 
-        if (!$apartment->save()) {
+        $em->persist($apartment);
+        $em->flush();
+
+        if (!$apartment->getId()) {
             return new View("there are no apartments exist", Response::HTTP_NOT_FOUND);
         }
 
