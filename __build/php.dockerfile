@@ -2,9 +2,7 @@ FROM php:7.1-fpm
 
 #Own PHP config
 COPY ./__build/php.ini /usr/local/etc/php
-
-COPY ./__build/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY ./__build/ssmtp.conf /etc/ssmtp/ssmtp.conf
 
 EXPOSE 9000
 
@@ -16,7 +14,7 @@ RUN apt-get update  \
 	zip \
 	unzip \
 	libpq-dev \
-	sendmail
+	ssmtp
 	
 # Install PHP extensions and Composer
 RUN docker-php-ext-install pdo_pgsql pgsql \

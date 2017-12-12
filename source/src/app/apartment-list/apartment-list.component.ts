@@ -14,22 +14,38 @@ declare var $ :any;
 })
 export class ApartmentListComponent implements OnInit {
 
-  constructor(public apartmentService: ApartmentService,
-              private router: Router) {}
+    constructor(public apartmentService: ApartmentService,
+                private router: Router) {}
 
-  ngOnInit() {
-    this.getApartments();
-  }
+    ngOnInit() {
+        this.getApartments();
+    }
 
-  getApartments(): void {
-    this.apartmentService.getApartments(true);
-  }
+    getApartments(): void {
+        this.apartmentService.getApartments(true);
+    }
 
     onSelect(apartment: Apartment): void {
         $('#show_appartment_modal').modal('show');
     }
 
     onDelete(apartment: Apartment) {
-        this.apartmentService.deleteApartment(apartment);
+
+        const apartmentService = this.apartmentService;
+
+        $.confirm({
+            title: 'Please cofirm!',
+            content: 'You are going to delete apartment!',
+            buttons: {
+                confirm: function () {
+                    apartmentService.deleteApartment(apartment);
+                },
+                cancel: function () {
+                    return;
+                }
+            }
+        });
+
+
     }
 }

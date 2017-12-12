@@ -2,3 +2,5 @@
 .git
 .dockerignore
 .gitignore
+source/node_modules
+server/vendor

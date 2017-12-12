@@ -12,6 +12,7 @@ services:
         - ../logs/nginx:/var/log/nginx
     ports:
      - "80:80"
+     - "25:25"
     links:
      - php
     depends_on:

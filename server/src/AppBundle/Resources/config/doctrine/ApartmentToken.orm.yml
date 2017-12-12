@@ -1,0 +1,19 @@
+AppBundle\Entity\ApartmentToken:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\ApartmentTokenRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        apartmentId:
+            type: integer
+            column: apartment_id
+        token:
+            type: string
+            length: '36'
+            unique: true
+    lifecycleCallbacks: {  }

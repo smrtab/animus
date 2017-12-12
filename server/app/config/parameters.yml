@@ -1,7 +1,7 @@
 # This file is auto-generated during the composer install
 parameters:
-    database_host: db
-    database_port: 5432
+    database_host: 192.168.99.100
+    database_port: 5444
     database_name: animus
     database_user: animus
     database_password: 12345

@@ -219,6 +219,9 @@ class Apartment
         $manager->persist($this);
         $manager->flush();
 
+        $atoken = new \ApartmentToken();
+	    $atoken->createFor($this->getId());
+
         return $this;
     }
 
