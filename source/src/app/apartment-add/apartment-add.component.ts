@@ -11,6 +11,8 @@ import {
       FormBuilder
 } from '@angular/forms'
 
+declare var jquery:any;
+declare var $ :any;
 
 @Component({
   selector: 'app-apartment-add',
@@ -66,5 +68,8 @@ export class ApartmentAddComponent implements OnInit {
   onSubmit() {
     this.apartment = this.create();
     this.apartmentService.addApartment(this.apartment);
+    this.aform.reset();
+
+    $('#add_appartment_modal').modal('hide');
   }
 }

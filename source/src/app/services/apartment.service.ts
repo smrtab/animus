@@ -19,84 +19,113 @@ export class ApartmentService {
   private __apartments: Apartment[];
 
   get apartments(): Observable<Apartment[]> {
-      return Observable.of(this.__apartments);
+	  return Observable.of(this.__apartments);
   }
 
-    //URLS
-  private listUrl = 'api/apartments';
-  private addUrl = 'api/apartment/add';
-  private updateUrl = 'api/apartment/update';
-  private apartmentUrl = 'api/apartment';
+	//URLS
+    private listUrl = 'api/apartments';
+    private addUrl = 'api/apartment/add';
+    private updateUrl = 'api/apartment/update';
+    private deleteUrl = 'api/apartment/delete';
+    private apartmentUrl = 'api/apartment';
 
   constructor(private http: HttpClient) {}
 
   getApartments(sync: boolean = false): Observable<Apartment[]> {
 
-    if ((sync === false) && (this.apartments))
-        return this.apartments;
+	if ((sync === false) && (this.apartments))
+		return this.apartments;
 
-    this.http.get<Apartment[]>(this.listUrl).pipe(
-        tap(_ => this.log('fetched apartments')),
-        catchError(this.handleError<Apartment[]>('getApartments'))
-    ).subscribe(apartment => this.__apartments = apartment);
+	this.http.get<Apartment[]>(this.listUrl).pipe(
+		tap(_ => this.log('fetched apartments')),
+		catchError(this.handleError<Apartment[]>('getApartments'))
+	).subscribe(apartments => this.__apartments = apartments);
 
-    return this.apartments;
+	return this.apartments;
   }
 
-  getApartment(id: number, sync: boolean=false): Apartment {
+  getApartment(id: number, sync: boolean=false): Observable<Apartment> {
 
-    if ((sync === false) && (this.apartments))
-        return this.__apartments.find(apartment => apartment.id == id);
+	if ((sync === false) && (this.__apartments))
+		return Observable.of(
+			this.__apartments.find(apartment => apartment.id == id)
+		);
 
-    const url = '${this.apartmentUrl}/${id}';
-    this.http.get<Apartment>(url).pipe(
-        tap(_ => this.log('fetched apartment id=${id}')),
-        catchError(this.handleError<Apartment>('getApartment id=${id}'))
-    );
+	const url = '${this.apartmentUrl}/${id}';
+	this.http.get<Apartment>(url).pipe(
+		tap(_ => this.log('fetched apartment id=${id}')),
+		catchError(this.handleError<Apartment>('getApartment id=${id}'))
+	);
+
+	return Observable.of(
+	  this.__apartments.find(apartment => apartment.id == id)
+	);
   }
 
   updateApartment(apartment: Apartment): Observable<any> {
-    return this.http.put(this.updateUrl, apartment, httpOptions).pipe(
-        tap(_ => this.log('updated apartment id=${apartment.id}')),
-        catchError(this.handleError<any>('updateApartment'))
-    );
+	return this.http.put(this.updateUrl, apartment, httpOptions).pipe(
+		tap(_ => this.log('updated apartment id=${apartment.id}')),
+		catchError(this.handleError<any>('updateApartment'))
+	);
   }
 
-    addApartment(apartment: Apartment): Observable<Apartment>{
-        const ap: Observable<Apartment> = this.http.post<Apartment>(this.addUrl, apartment, httpOptions).pipe(
-            tap(_ => this.log('add apartment')),
-            catchError(this.handleError<Apartment>('updateApartment'))
+	addApartment(apartment: Apartment): Observable<Apartment>{
+		const ap: Observable<Apartment> = this.http.post<Apartment>(this.addUrl, apartment, httpOptions).pipe(
+			tap(_ => this.log('add apartment')),
+			catchError(this.handleError<Apartment>('updateApartment'))
+		);
+
+		ap.subscribe(response => {
+			console.log(response);
+			this.pushApartment(response);
+		});
+
+		return ap;
+	}
+
+    deleteApartment(apartment: Apartment | number): Observable<Apartment> {
+        const id = typeof apartment === 'number' ? apartment : apartment.id;
+        const url = `${this.deleteUrl}/${id}`;
+
+        const ap: Observable<Apartment> = this.http.delete<Apartment>(url, httpOptions).pipe(
+            tap(_ => this.log(`deleted apartment id=${id}`)),
+            catchError(this.handleError<Apartment>('deleteApartment'))
         );
 
         ap.subscribe(response => {
             console.log(response);
-            this.pushApartment(response);
+            this.dropApartment(id);
         });
 
         return ap;
     }
 
-  pushApartment(apartment: Apartment): void {
-      this.log(JSON.stringify(apartment));
-      this.__apartments.push(apartment);
-  }
+    pushApartment(apartment: Apartment): void {
+        this.log(JSON.stringify(apartment));
+        this.__apartments.push(apartment);
+    }
+
+    dropApartment(id: number): void {
+        this.log("deleted " + id);
+        this.__apartments = this.__apartments.filter(apartment => apartment.id !== id);
+    }
 
   private handleError<T> (operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
+	return (error: any): Observable<T> => {
 
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
+	  // TODO: send the error to remote logging infrastructure
+	  console.error(error); // log to console instead
 
-      // TODO: better job of transforming error for user consumption
-      this.log('${operation} failed: ${error.message}');
+	  // TODO: better job of transforming error for user consumption
+	  this.log('${operation} failed: ${error.message}');
 
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
+	  // Let the app keep running by returning an empty result.
+	  return of(result as T);
+	};
   }
 
-  private log(message: string) {
-    console.log('ApartmentService: ' + message);
-  }
+    private log(message: string) {
+        console.log('ApartmentService: ' + message);
+    }
 
 }

@@ -1,3 +1,24 @@
-<p>
-  apartment-show works!
-</p>
+<!-- Modal -->
+<div id="show_appartment_modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Show apartment</h4>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+            <div>{{(apartment | async)?.id}}</div>
+            <div>{{(apartment | async)?.street}}</div>
+            <div>{{(apartment | async)?.post_code}}</div>
+            <div>{{(apartment | async)?.town}}</div>
+            <div>{{(apartment | async)?.country}}</div>
+            <div>{{(apartment | async)?.email}}</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

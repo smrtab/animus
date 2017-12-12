@@ -15,7 +15,8 @@ RUN apt-get update  \
 	wget \
 	zip \
 	unzip \
-	libpq-dev
+	libpq-dev \
+	sendmail
 	
 # Install PHP extensions and Composer
 RUN docker-php-ext-install pdo_pgsql pgsql \

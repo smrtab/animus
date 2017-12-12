@@ -7,7 +7,7 @@ import { ApartmentShowComponent }  from '../apartment-show/apartment-show.compon
 const routes: Routes = [
   { path: '', redirectTo: '/', pathMatch: 'full' },
   { path: 'apartments', component: ApartmentListComponent },
-  { path: 'apartment/show', component: ApartmentShowComponent }
+  { path: 'apartment/show/{id}', component: ApartmentShowComponent }
 ];
 
 @NgModule({

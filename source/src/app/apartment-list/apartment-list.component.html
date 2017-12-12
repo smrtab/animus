@@ -1,14 +1,32 @@
 <div *ngIf="apartmentService.apartments;then list else empty_list"></div>
 
 <ng-template #list>
-  <div class="row" *ngFor="let apartment of (apartmentService.apartments | async)" (click)="onSelect(apartment)">
-    <div class="col">{{apartment.id}}</div>
-    <div class="col">{{apartment.street}}</div>
-    <div class="col">{{apartment.post_code}}</div>
-    <div class="col">{{apartment.town}}</div>
-    <div class="col">{{apartment.country}}</div>
-    <div class="col">{{apartment.email}}</div>
-  </div>
+<div class="aprt container">
+    <div class="th row">
+        <div class="col-md-1">ID</div>
+        <div class="col-md-2">STREET</div>
+        <div class="col-md-2">POST CODE</div>
+        <div class="col-md-2">TOWN</div>
+        <div class="col-md-1">COUNTRY</div>
+        <div class="col-md-2">EMAIL</div>
+        <div class="col-md-1">EDIT</div>
+        <div class="col-md-1">DELETE</div>
+    </div>
+    <div class="ord row" *ngFor="let apartment of (apartmentService.apartments | async)">
+        <div class="align-middle col-md-1">{{apartment.id}}</div>
+        <div class="align-middle col-md-2">{{apartment.street}}</div>
+        <div class="align-middle col-md-2">{{apartment.post_code}}</div>
+        <div class="align-middle col-md-2">{{apartment.town}}</div>
+        <div class="align-middle col-md-1">{{apartment.country}}</div>
+        <div class="align-middle col-md-2">{{apartment.email}}</div>
+        <div class="align-middle col-md-1">
+            <button type="button" class="btn btn-info btn-sm">edit</button>
+        </div>
+        <div class="align-middle col-md-1">
+            <button type="button" class="btn btn-info btn-sm" (click)="onDelete(apartment)">delete</button>
+        </div>
+    </div>
+</div>
 </ng-template>
 <ng-template #empty_list>
   List is yet empty

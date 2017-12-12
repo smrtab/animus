@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * Apartment
  */
@@ -195,6 +197,47 @@ class Apartment
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * Create apartment
+     *
+     * @param array $data
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     *
+     * @return Apartment
+     */
+    public function create(array $data, $manager) {
+
+        $this->setMoveInDate($data["move_in_date"]);
+        $this->setStreet($data['street']);
+        $this->setPostCode($data['post_code']);
+        $this->setTown($data['town']);
+        $this->setCountry($data['country']);
+        $this->setEmail($data['email']);
+
+        $manager->persist($this);
+        $manager->flush();
+
+        return $this;
+    }
+
+    /**
+     * Delete apartment
+     *
+     * @param integer id
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     *
+     * @return boolean
+     */
+    public function delete($id, $manager) {
+
+        $apartment = $manager->getRepository('AppBundle:Apartment')->find($id);
+
+        $manager->remove($apartment);
+        $manager->flush();
+
+        return true;
     }
 }
 

@@ -1,0 +1,31 @@
+@import '~scss/variables';
+
+.aprt {
+
+  .row {
+
+  }
+  .th {
+    font-weight: bold;
+    font-size: 12px;
+    background-color: mintcream;
+    padding:5px 0;
+    border-bottom: 1px solid $deep_blue;
+  }
+
+  .ord {
+    font-size: 14px;
+
+    div {
+      line-height: 40px;
+
+      &:nth-of-type(odd){
+        background: mintcream;
+      }
+      &:nth-of-type(even){
+        background: white;
+      }
+    }
+
+  }
+}

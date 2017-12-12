@@ -4,14 +4,15 @@ import { Apartment } from '../models/apartment';
 import { ApartmentService } from '../services/apartment.service';
 import {Observable} from "rxjs/Observable";
 
+declare var jquery:any;
+declare var $ :any;
+
 @Component({
   selector: 'app-apartment-list',
   templateUrl: './apartment-list.component.html',
   styleUrls: ['./apartment-list.component.scss']
 })
 export class ApartmentListComponent implements OnInit {
-
-  apartments: Observable<Apartment[]>;
 
   constructor(public apartmentService: ApartmentService,
               private router: Router) {}
@@ -24,7 +25,11 @@ export class ApartmentListComponent implements OnInit {
     this.apartmentService.getApartments(true);
   }
 
-  onSelect(apartment: Apartment): void {
-    this.router.navigateByUrl('/apartment/show');
-  }
+    onSelect(apartment: Apartment): void {
+        $('#show_appartment_modal').modal('show');
+    }
+
+    onDelete(apartment: Apartment) {
+        this.apartmentService.deleteApartment(apartment);
+    }
 }
