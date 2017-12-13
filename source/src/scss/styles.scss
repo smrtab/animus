@@ -40,3 +40,9 @@ a:hover {
   background-color: white;
   @include border-radius(5px);
 }
+
+#spinner {
+  width: 100%;
+  text-align: center;
+  padding:10px 0;
+}

@@ -85,20 +85,18 @@ class ApiController extends FOSRestController
 	        $atoken = new ApartmentToken();
 	        $atoken->createFor($result->getId(), $manager);
 
-            $message = \Swift_Message::newInstance()
-                ->setSubject('Hello Email')
-                ->setFrom('send@example.com')
-                ->setTo($request->get('email'))
-                ->setBody(
-                    $this->renderView(
-                    // app/Resources/views/Emails/registration.html.twig
-                        'Emails/notification.html.twig',
-                        array('id' => $result->getId())
-                    ),
-                    'text/html'
-                )
-            ;
-            $this->get('mailer')->send($message);
+	        $body = $this->renderView(
+		        'Emails/notification.html.twig',
+		        array('id' => $result->getId())
+	        );
+
+	        $headers = [
+		        'From: Animus <no_reply@animus.com>',
+	            'Cc: birthdayarchive@example.com',
+		        'X-Mailer: PHP/' . phpversion()
+		    ];
+
+	        mail($request->get('email'), 'New appartment added', $body, $headers);
 
             return $apartment;
 

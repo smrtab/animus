@@ -10,5 +10,5 @@ parameters:
     mailer_transport: gmail
     mailer_host: ~
     mailer_user: "alexx.smrt@gmail.com"
-    mailer_password: "ghjTR091"
+    mailer_password:
     secret: cf08bab297a7bd50fe174b14d3d27ecf83c8616f

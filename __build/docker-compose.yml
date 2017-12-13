@@ -27,6 +27,7 @@ services:
         - ../server:/animus/server
         - ../client:/animus/client
         - ../logs/app:/animus/server/var/logs
+        - ../logs/msmtp:/var/log/msmtp
     links:
      - db
   db:
