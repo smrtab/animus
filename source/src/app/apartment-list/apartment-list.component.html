@@ -23,7 +23,7 @@
             <button type="button" class="btn btn-info btn-sm" (click)="onEdit(apartment)">edit</button>
         </div>
         <div class="align-middle col-md-1">
-            <button type="button" class="btn btn-info btn-sm" (click)="onDelete(apartment)">delete</button>
+            <button type="button" class="btn btn-info btn-sm" (click)="onDelete(apartment, $event)">delete</button>
         </div>
     </div>
 </div>
@@ -32,6 +32,9 @@
   List is yet empty
 </ng-template>
 
+<div id="spinner">
+    <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+</div>
 
 <app-apartment-add></app-apartment-add>
 

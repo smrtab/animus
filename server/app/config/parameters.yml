@@ -5,8 +5,10 @@ parameters:
     database_name: animus
     database_user: animus
     database_password: 12345
-    mailer_transport: smtp
-    mailer_host: localhost
-    mailer_user: null
-    mailer_password: null
+
+    disable_delivery: true
+    mailer_transport: gmail
+    mailer_host: ~
+    mailer_user: "alexx.smrt@gmail.com"
+    mailer_password: "ghjTR091"
     secret: cf08bab297a7bd50fe174b14d3d27ecf83c8616f

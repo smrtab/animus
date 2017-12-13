@@ -69,6 +69,7 @@ doctrine_migrations:
 
 # Swiftmailer Configuration
 swiftmailer:
+    disable_delivery: true
     transport: '%mailer_transport%'
     host: '%mailer_host%'
     username: '%mailer_user%'

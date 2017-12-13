@@ -67,9 +67,16 @@ export class ApartmentAddComponent implements OnInit {
 
   onSubmit() {
     this.apartment = this.create();
-    this.apartmentService.addApartment(this.apartment);
+    $('#spinner').show();
+    this.apartmentService.addApartment(this.apartment).subscribe(response => {
+        console.log(response);
+        $('#spinner').hide();
+        this.apartmentService.pushApartment(response);
+    });
+
     this.aform.reset();
 
     $('#add_appartment_modal').modal('hide');
+
   }
 }

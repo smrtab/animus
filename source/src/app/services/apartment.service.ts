@@ -77,24 +77,17 @@ export class ApartmentService {
     }
 
 	addApartment(apartment: Apartment): Observable<Apartment>{
-		const ap: Observable<Apartment> = this.http.post<Apartment>(this.addUrl, apartment, httpOptions).pipe(
+		return this.http.post<Apartment>(this.addUrl, apartment, httpOptions).pipe(
 			tap(_ => this.log('add apartment')),
 			catchError(this.handleError<Apartment>('updateApartment'))
 		);
-
-		ap.subscribe(response => {
-			console.log(response);
-			this.pushApartment(response);
-		});
-
-		return ap;
 	}
 
     deleteApartment(apartment: Apartment | number): Observable<Apartment> {
         const id = typeof apartment === 'number' ? apartment : apartment.id;
         const url = `${this.deleteUrl}/${id}`;
 
-        const ap: Observable<Apartment> = this.http.delete<Apartment>(this.deleteUrl, httpOptions).pipe(
+        const ap: Observable<Apartment> = this.http.delete<Apartment>(url, httpOptions).pipe(
             tap(_ => this.log(`deleted apartment id=${id}`)),
             catchError(this.handleError<Apartment>('deleteApartment'))
         );
