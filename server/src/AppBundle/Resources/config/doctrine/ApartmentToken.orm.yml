@@ -1,6 +1,6 @@
 AppBundle\Entity\ApartmentToken:
     type: entity
-    table: null
+    table: apartment_tokens
     repositoryClass: AppBundle\Repository\ApartmentTokenRepository
     id:
         id:

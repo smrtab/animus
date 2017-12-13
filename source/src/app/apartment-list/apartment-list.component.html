@@ -20,7 +20,7 @@
         <div class="align-middle col-md-1">{{apartment.country}}</div>
         <div class="align-middle col-md-2">{{apartment.email}}</div>
         <div class="align-middle col-md-1">
-            <button type="button" class="btn btn-info btn-sm">edit</button>
+            <button type="button" class="btn btn-info btn-sm" (click)="onEdit(apartment)">edit</button>
         </div>
         <div class="align-middle col-md-1">
             <button type="button" class="btn btn-info btn-sm" (click)="onDelete(apartment)">delete</button>
@@ -31,3 +31,8 @@
 <ng-template #empty_list>
   List is yet empty
 </ng-template>
+
+
+<app-apartment-add></app-apartment-add>
+
+<app-apartment-edit [apartment]="selectedApartment"></app-apartment-edit>

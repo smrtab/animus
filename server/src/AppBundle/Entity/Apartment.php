@@ -2,8 +2,6 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Apartment
  */
@@ -219,11 +217,30 @@ class Apartment
         $manager->persist($this);
         $manager->flush();
 
-        $atoken = new \ApartmentToken();
-	    $atoken->createFor($this->getId());
-
         return $this;
     }
+
+	/**
+	 * Update apartment
+	 *
+	 * @param array $data
+	 * @param \Doctrine\Common\Persistence\ObjectManager $manager
+	 *
+	 * @return Apartment
+	 */
+	public function update(array $data, $manager) {
+
+		$this->setMoveInDate($data["move_in_date"]);
+		$this->setStreet($data['street']);
+		$this->setPostCode($data['post_code']);
+		$this->setTown($data['town']);
+		$this->setCountry($data['country']);
+		$this->setEmail($data['email']);
+
+		$manager->flush();
+
+		return $this;
+	}
 
     /**
      * Delete apartment

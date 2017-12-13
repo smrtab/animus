@@ -27,7 +27,6 @@ export class ApartmentService {
     private addUrl = 'api/apartment/add';
     private updateUrl = 'api/apartment/update';
     private deleteUrl = 'api/apartment/delete';
-    private apartmentUrl = 'api/apartment';
 
     constructor(private http: HttpClient) {}
 
@@ -62,11 +61,19 @@ export class ApartmentService {
         );
     }
 
-    updateApartment(apartment: Apartment): Observable<any> {
-        return this.http.put(this.updateUrl, apartment, httpOptions).pipe(
-            tap(_ => this.log('updated apartment id=${apartment.id}')),
-            catchError(this.handleError<any>('updateApartment'))
+    updateApartment(apartment: Apartment): Observable<Apartment> {
+        const ap: Observable<Apartment> = this.http.put<Apartment>(this.updateUrl, apartment, httpOptions).pipe(
+            tap(_ => this.log('update apartment')),
+            catchError(this.handleError<Apartment>('updateApartment'))
         );
+
+        ap.subscribe(response => {
+            console.log(response);
+            this.dropApartment(response.id);
+            this.pushApartment(response);
+        });
+
+        return ap;
     }
 
 	addApartment(apartment: Apartment): Observable<Apartment>{
@@ -87,7 +94,7 @@ export class ApartmentService {
         const id = typeof apartment === 'number' ? apartment : apartment.id;
         const url = `${this.deleteUrl}/${id}`;
 
-        const ap: Observable<Apartment> = this.http.delete<Apartment>(url, httpOptions).pipe(
+        const ap: Observable<Apartment> = this.http.delete<Apartment>(this.deleteUrl, httpOptions).pipe(
             tap(_ => this.log(`deleted apartment id=${id}`)),
             catchError(this.handleError<Apartment>('deleteApartment'))
         );

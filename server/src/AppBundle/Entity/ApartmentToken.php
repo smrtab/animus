@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Ramsey\Uuid\Uuid;
+
 /**
  * ApartmentToken
  */
@@ -81,8 +83,17 @@ class ApartmentToken
         return $this->token;
     }
 
-    public function createFor($id) {
+    public function createFor($id, $manager) {
 
+    	$token = Uuid::uuid4();
+
+	    $this->setApartmentId($id);
+	    $this->setToken($token);
+
+	    $manager->persist($this);
+	    $manager->flush();
+
+	    return $this;
     }
 }
 

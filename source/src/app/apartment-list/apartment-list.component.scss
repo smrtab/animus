@@ -21,6 +21,8 @@
 
       &:nth-of-type(odd){
         background: mintcream;
+        border-left: 1px solid $deep_blue;
+        border-right: 1px solid $deep_blue;
       }
       &:nth-of-type(even){
         background: white;

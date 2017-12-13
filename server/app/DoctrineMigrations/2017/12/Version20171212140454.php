@@ -24,6 +24,13 @@ class Version20171212140454 extends AbstractMigration
 
 	    $this->addSql('CREATE SEQUENCE apartment_tokens_id_seq;');
 	    $this->addSql('ALTER TABLE apartment_tokens ALTER COLUMN id SET DEFAULT nextval(\'apartment_tokens_id_seq\');');
+	    $this->addSql('	ALTER TABLE apartment_tokens 
+						   ADD CONSTRAINT fk_apartment_tokens_apartments
+						   FOREIGN KEY (apartment_id) 
+						   REFERENCES apartments(id) 
+						   ON DELETE CASCADE;');
+
+
     }
 
     /**

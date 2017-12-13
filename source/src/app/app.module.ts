@@ -13,6 +13,7 @@ import { ApartmentAddComponent } from './apartment-add/apartment-add.component';
 import { RoutesModule } from './routes/routes.module';
 
 import { ApartmentService } from './services/apartment.service';
+import { ApartmentEditComponent } from './apartment-edit/apartment-edit.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { ApartmentService } from './services/apartment.service';
     AppComponent,
     ApartmentListComponent,
     ApartmentShowComponent,
-    ApartmentAddComponent
+    ApartmentAddComponent,
+    ApartmentEditComponent
   ],
   imports: [
     BrowserModule,

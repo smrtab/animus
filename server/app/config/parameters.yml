@@ -1,12 +1,12 @@
 # This file is auto-generated during the composer install
 parameters:
-    database_host: 192.168.99.100
-    database_port: 5444
+    database_host: db
+    database_port: 5432
     database_name: animus
     database_user: animus
     database_password: 12345
     mailer_transport: smtp
-    mailer_host: null
+    mailer_host: localhost
     mailer_user: null
     mailer_password: null
     secret: cf08bab297a7bd50fe174b14d3d27ecf83c8616f
