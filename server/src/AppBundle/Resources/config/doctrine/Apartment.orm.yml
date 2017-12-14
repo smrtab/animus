@@ -8,6 +8,8 @@ AppBundle\Entity\Apartment:
             id: true
             generator:
                 strategy: AUTO
+            options:
+                default: nextval('apartments_id_seq')
     fields:
         move_in_date:
             type: datetime

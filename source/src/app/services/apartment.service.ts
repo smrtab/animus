@@ -10,7 +10,7 @@ import 'rxjs/add/observable/of';
 
 const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + 'sfw34c34'
+        'AuthToken': '78FZtsS6tvWHw4iWNrLnbZPxF4qUK1pO'
     })
 };
 
@@ -41,7 +41,7 @@ export class ApartmentService {
         if ((sync === false) && (this.apartments))
             return this.apartments;
 
-        return this.http.get<Apartment[]>(this.listUrl).pipe(
+        return this.http.get<Apartment[]>(this.listUrl, httpOptions).pipe(
             tap(_ => this.log('fetched apartments')),
             catchError(this.handleError<Apartment[]>('getApartments'))
         );
@@ -55,7 +55,7 @@ export class ApartmentService {
             );
 
         const url = '${this.apartmentUrl}/${id}';
-        this.http.get<Apartment>(url).pipe(
+        this.http.get<Apartment>(url, httpOptions).pipe(
             tap(_ => this.log('fetched apartment id=${id}')),
             catchError(this.handleError<Apartment>('getApartment id=${id}'))
         );
@@ -66,6 +66,7 @@ export class ApartmentService {
     }
 
     updateApartment(apartment: Apartment): Observable<Apartment> {
+
         const ap: Observable<Apartment> = this.http.put<Apartment>(this.updateUrl, apartment, httpOptions).pipe(
             tap(_ => this.log('update apartment')),
             catchError(this.handleError<Apartment>('updateApartment'))
@@ -87,8 +88,8 @@ export class ApartmentService {
 		);
 	}
 
-    deleteApartment(apartment: Apartment | number): Observable<Apartment> {
-        const id = typeof apartment === 'number' ? apartment : apartment.id;
+    deleteApartment(apartment: Apartment): Observable<Apartment> {
+        const id = apartment.id;
         const url = `${this.deleteUrl}/${id}`;
 
         const ap: Observable<Apartment> = this.http.delete<Apartment>(url, httpOptions).pipe(

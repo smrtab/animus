@@ -12,10 +12,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\View\View;
 use AppBundle\Entity\Apartment;
-use AppBundle\Entity\ApartmentToken;
 use Monolog\Logger;
+use AppBundle\Controller\TokenAuthenticatedController;
 
-class ApiController extends FOSRestController
+class ApiController extends FOSRestController implements TokenAuthenticatedController
 {
 
 	private $logger;
@@ -31,6 +31,7 @@ class ApiController extends FOSRestController
     {
     	try {
 		    $result = $this->getDoctrine()->getRepository('AppBundle:Apartment')->findAll();
+
 		    if (!$result) {
 			    return new View([], Response::HTTP_OK);
 		    }
@@ -106,9 +107,6 @@ class ApiController extends FOSRestController
                 throw $this->createNotFoundException("Unexpected behavior while saving", Response::HTTP_INTERNAL_SERVER_ERROR);
             }
 
-	        $atoken = new ApartmentToken();
-	        $atoken->createFor($result->getId(), $manager);
-
 	        $body = $this->renderView(
 		        'Emails/notification.html.twig',
 		        array('id' => $result->getId())
@@ -116,8 +114,7 @@ class ApiController extends FOSRestController
 
 	        $headers = [
 		        'From: Animus <no_reply@animus.com>',
-	            'Cc: birthdayarchive@example.com',
-		        'X-Mailer: PHP/' . phpversion()
+	            'Cc: birthdayarchive@example.com'
 		    ];
 
 	        mail($request->get('email'), 'New appartment added', $body, implode("\r\n", $headers));

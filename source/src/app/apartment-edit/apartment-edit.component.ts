@@ -82,7 +82,7 @@ export class ApartmentEditComponent implements OnInit {
     onSubmit() {
         const formModel = this.aform.value;
         const apartment: Apartment = {
-            id: formModel.id,
+            id: this.apartment.id,
             move_in_date: formModel.move_in_date,
             street: formModel.street,
             post_code: formModel.post_code,

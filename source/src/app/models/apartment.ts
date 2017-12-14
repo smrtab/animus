@@ -1,4 +1,4 @@
-export interface Apartment {
+export class Apartment {
     id?: number;
     move_in_date: Date;
     street: string;

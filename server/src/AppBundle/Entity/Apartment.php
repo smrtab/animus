@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * Apartment
  */
@@ -41,7 +43,6 @@ class Apartment
      * @var string
      */
     private $email;
-
 
     /**
      * Get id
