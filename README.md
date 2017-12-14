@@ -1,5 +1,5 @@
 # Apartments management interface
-###Description
+### Description
 Dockerized stack for further eventual leveraging. It is a complete system being built along with following images:
 ```
 * nginx:latest
@@ -20,7 +20,7 @@ But before makefile you need to decide about mailer engine real work:
 If you want a real messages delivery you should manually configure file at ./__build/msmtprc
 ```
 
-###Requirements
+### Requirements
 ```
 1) Established npm package manager 
 2) Established ng module
@@ -34,7 +34,7 @@ Nginx is configured to be forwarded on 80 port of the Docker host, so you can ch
 For convenience' sake all logs from containers are mounted to Docker host in root's logs folder of project.
 Logs are separated to app/, nginx/, /msmtp folders
 
-###TODO
+### TODO
 Due to development state of projects and therefore it lacks some useful feature:
 1) Stronger validation on client side and server side
 2) TDD integration if possible at the moment
