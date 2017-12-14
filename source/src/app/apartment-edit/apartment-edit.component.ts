@@ -30,19 +30,28 @@ export class ApartmentEditComponent implements OnInit {
     ngOnInit() {
     }
 
+    ngAfterViewInit(){
+        $("#mid").datepicker({
+            format: 'yyyy-mm-dd',
+            startDate: '-3d'
+        });
+    }
+
     ngOnChanges(changes: SimpleChanges) {
         const apartment: SimpleChange = changes.apartment;
         console.log('prev value: ', apartment.previousValue);
         console.log('got name: ', apartment.currentValue);
 
         if (undefined !== apartment.currentValue) {
+
             this.apartment = apartment.currentValue;
+            const date : Date = new Date(this.apartment.move_in_date);
 
             this.aform = new FormGroup({
                 id: new FormControl(this.apartment.id, [
                     Validators.required
                 ]),
-                move_in_date: new FormControl(this.apartment.move_in_date, [
+                move_in_date: new FormControl(date.getFullYear() + '-' + ((date.getMonth() + 1)) + '-' + date.getDate(), [
                     Validators.required
                 ]),
                 post_code: new FormControl(this.apartment.post_code, [
@@ -63,6 +72,9 @@ export class ApartmentEditComponent implements OnInit {
                     Validators.pattern("[^ @]*@[^ @]*")
                 ])
             });
+
+            $('#edit_appartment_modal').modal('show');
+
         }
 
     }

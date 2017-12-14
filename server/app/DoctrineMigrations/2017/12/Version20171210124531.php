@@ -18,7 +18,7 @@ class Version20171210124531 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE apartments (
           id int NOT NULL,
-          move_in_date timestamp default NULL,
+          move_in_date date default NULL,
           street varchar(255) NOT NULL,
           post_code int NOT NULL,
           town varchar(100) NOT NULL,

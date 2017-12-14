@@ -25,8 +25,9 @@ export class ApartmentListComponent implements OnInit {
 
     getApartments(): void {
         $('#spinner').show();
-        this.apartmentService.getApartments(true).subscribe(ap=>{
+        this.apartmentService.getApartments(true).subscribe(apartments=> {
             $('#spinner').hide();
+            this.apartmentService.setRegistry(apartments);
         });
     }
 
@@ -51,8 +52,9 @@ export class ApartmentListComponent implements OnInit {
     }
 
     onEdit(apartment: Apartment) {
+        if (this.selectedApartment === apartment) {
+            $('#edit_appartment_modal').modal('show');
+        }
         this.selectedApartment = apartment;
-        $('#edit_appartment_modal').modal('show');
-        //this.router.navigate(['/apartment/edit/', { id: apartment.id}]);
     }
 }

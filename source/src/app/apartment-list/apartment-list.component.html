@@ -37,5 +37,6 @@
 </div>
 
 <app-apartment-add></app-apartment-add>
-
+<div *ngIf="selectedApartment">
 <app-apartment-edit [apartment]="selectedApartment"></app-apartment-edit>
+</div>

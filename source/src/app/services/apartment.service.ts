@@ -9,7 +9,9 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 
 const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({ 'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + 'sfw34c34'
+    })
 };
 
 @Injectable()
@@ -30,17 +32,19 @@ export class ApartmentService {
 
     constructor(private http: HttpClient) {}
 
+    setRegistry(apartments: Apartment[]): void {
+        this.__apartments = apartments;
+    }
+
     getApartments(sync: boolean = false): Observable<Apartment[]> {
 
         if ((sync === false) && (this.apartments))
             return this.apartments;
 
-        this.http.get<Apartment[]>(this.listUrl).pipe(
+        return this.http.get<Apartment[]>(this.listUrl).pipe(
             tap(_ => this.log('fetched apartments')),
             catchError(this.handleError<Apartment[]>('getApartments'))
-        ).subscribe(apartments => this.__apartments = apartments);
-
-        return this.apartments;
+        );
     }
 
     getApartment(id: number, sync: boolean=false): Observable<Apartment> {

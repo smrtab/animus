@@ -51,6 +51,12 @@ export class ApartmentAddComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit(){
+      $("#mid-add").datepicker({
+          format: 'yyyy-mm-dd'
+      });
+  }
+
   create() {
     const formModel = this.aform.value;
     const apartment: Apartment = {

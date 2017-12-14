@@ -46,3 +46,13 @@ a:hover {
   text-align: center;
   padding:10px 0;
 }
+
+.container {
+  .form-group {
+    .ng-invalid {
+      border-color: maroon;
+      color: white;
+      background-color: #ce8483;
+    }
+  }
+}

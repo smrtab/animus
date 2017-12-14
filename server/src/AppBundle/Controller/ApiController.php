@@ -96,7 +96,7 @@ class ApiController extends FOSRestController
 		        'X-Mailer: PHP/' . phpversion()
 		    ];
 
-	        mail($request->get('email'), 'New appartment added', $body, $headers);
+	        mail($request->get('email'), 'New appartment added', $body, implode("\r\n", $headers));
 
             return $apartment;
 
