@@ -7,26 +7,42 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
+use Symfony\Component\Debug\Exception\FatalErrorException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\View\View;
 use AppBundle\Entity\Apartment;
 use AppBundle\Entity\ApartmentToken;
-use Psr\Log\LoggerInterface;
+use Monolog\Logger;
 
 class ApiController extends FOSRestController
 {
+
+	private $logger;
+
+	public function __construct(){
+		$this->logger = new Logger("api");
+	}
 
     /**
      * @Rest\Get("api/apartments")
      */
     public function getAction()
     {
-        $result = $this->getDoctrine()->getRepository('AppBundle:Apartment')->findAll();
-        if (null === $result) {
-            return new View("there are no apartments exist", Response::HTTP_NOT_FOUND);
-        }
-        return $result;
+    	try {
+		    $result = $this->getDoctrine()->getRepository('AppBundle:Apartment')->findAll();
+		    if (!$result) {
+			    return new View([], Response::HTTP_OK);
+		    }
+		    return $result;
+	    } catch(\Exception $e) {
+		    $this->logger->critical("Got exception ".$e->getMessage());
+		    return new View([
+			    'status'=>Response::HTTP_INTERNAL_SERVER_ERROR,
+			    'message'=>$e->getMessage()
+		    ], Response::HTTP_INTERNAL_SERVER_ERROR);
+	    }
+
     }
 
     /**
@@ -34,11 +50,19 @@ class ApiController extends FOSRestController
      */
     public function getApartmentAction($id)
     {
-        $result = $this->getDoctrine()->getRepository('AppBundle:Apartment')->find($id);
-        if (null === $result) {
-            return [];
-        }
-        return $result;
+    	try {
+		    $result = $this->getDoctrine()->getRepository('AppBundle:Apartment')->find($id);
+		    if (null === $result) {
+			    throw $this->createAccessDeniedException("Acess denied", Response::HTTP_INTERNAL_SERVER_ERROR);
+		    }
+		    return $result;
+	    } catch (\Exception $e) {
+		    $this->logger->critical("Got exception ".$e->getMessage());
+		    return new View([
+			    'status'=>Response::HTTP_INTERNAL_SERVER_ERROR,
+			    'message'=>$e->getMessage()
+		    ], Response::HTTP_INTERNAL_SERVER_ERROR);
+	    }
     }
 
     /**
@@ -79,7 +103,7 @@ class ApiController extends FOSRestController
             ], $manager);
 
             if (!$result->getId()) {
-                return new View("there are no apartments exist", Response::HTTP_NOT_FOUND);
+                throw $this->createNotFoundException("Unexpected behavior while saving", Response::HTTP_INTERNAL_SERVER_ERROR);
             }
 
 	        $atoken = new ApartmentToken();
@@ -101,7 +125,11 @@ class ApiController extends FOSRestController
             return $apartment;
 
         } catch(\Exception $e) {
-
+	        $this->logger->critical("Got exception ".$e->getMessage());
+	        return new View([
+	        	'status'=>Response::HTTP_INTERNAL_SERVER_ERROR,
+		        'message'=>$e->getMessage()
+	        ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -140,9 +168,7 @@ class ApiController extends FOSRestController
 			$apartment = $manager->getRepository('AppBundle:Apartment')->find($id);
 
 			if (!$apartment) {
-				throw $this->createNotFoundException(
-					'No apartment found for id '.$id
-				);
+				throw $this->createAccessDeniedException("Acess denied", Response::HTTP_INTERNAL_SERVER_ERROR);
 			}
 
 			$result = $apartment->update([
@@ -161,7 +187,11 @@ class ApiController extends FOSRestController
 			return $apartment;
 
 		} catch(\Exception $e) {
-
+			$this->logger->critical("Got exception ".$e->getMessage());
+			return new View([
+				'status'=>Response::HTTP_INTERNAL_SERVER_ERROR,
+				'message'=>$e->getMessage()
+			], Response::HTTP_INTERNAL_SERVER_ERROR);
 		}
 
 	}
@@ -181,7 +211,11 @@ class ApiController extends FOSRestController
             return true;
 
         } catch(\Exception $e) {
-
+	        $this->logger->critical("Got exception ".$e->getMessage());
+	        return new View([
+		        'status'=>Response::HTTP_INTERNAL_SERVER_ERROR,
+		        'message'=>$e->getMessage()
+	        ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
     }
