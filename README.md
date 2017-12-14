@@ -34,6 +34,9 @@ Nginx is configured to be forwarded on 80 port of the Docker host, so you can ch
 For convenience' sake all logs from containers are mounted to Docker host in root's logs folder of project.
 Logs are separated to app/, nginx/, /msmtp folders
 
+From source/ folder it compiles output bundle of angular's files into client/ folder. Further they will be treat as static by nginx server.
+Caching of static is disabled at the moment (sendfile = off)
+
 ### TODO
 Due to development state of projects and therefore it lacks some useful feature:
 1) Stronger validation on client side and server side
