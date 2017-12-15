@@ -43,6 +43,11 @@ Interacion between client and server performs with AuthToken verification. Every
 
 Server's REST API logic is built with FOSRestBundle.
 
+### MAIL
+1. Set your own account in msmptrc and mark it as default
+2. Point your account in php.ini un section used for sendmail setting (sendmail_path = /usr/bin/msmtp -a gmail -t)
+3. Rebuild php image (docker-compose stop && docker-compose build php && docker-compose up -d)
+
 ### TODO
 Due to development state of projects and therefore it lacks some useful feature:
 1) Stronger validation on client side and server side
