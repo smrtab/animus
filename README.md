@@ -37,6 +37,12 @@ Logs are separated to app/, nginx/, /msmtp folders
 From source/ folder it compiles output bundle of angular's files into client/ folder. Further they will be treat as static by nginx server.
 Caching of static is disabled at the moment (sendfile = off)
 
+Frontend is built under Angular5(angular-cli) version. There are components for list, add and edit apartments. The entire page is under apartment-list manage. Add component and edit are the modal ones.
+
+Interacion between client and server performs with AuthToken verification. Every outgoing client's request is being signed by AuthToken header. Server side in turn check it inside middleware before resolve request further.
+
+Server's REST API logic is built with FOSRestBundle.
+
 ### TODO
 Due to development state of projects and therefore it lacks some useful feature:
 1) Stronger validation on client side and server side
