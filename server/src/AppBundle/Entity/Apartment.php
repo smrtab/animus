@@ -6,43 +6,63 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Apartment
+ *
+ * @ORM\Table(name="apartments")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ApartmentRepository")
  */
 class Apartment
 {
     /**
      * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="move_in_date", type="date", nullable=true)
      */
-    private $move_in_date;
+    private $moveInDate;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="street", type="string", length=255)
      */
     private $street;
 
     /**
      * @var int
+     *
+     * @ORM\Column(name="post_code", type="integer")
      */
     private $postCode;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="town", type="string", length=100)
      */
     private $town;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="country", type="string", length=100)
      */
     private $country;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=255)
      */
     private $email;
+
 
     /**
      * Get id
@@ -63,7 +83,7 @@ class Apartment
      */
     public function setMoveInDate($moveInDate)
     {
-        $this->move_in_date = $moveInDate;
+        $this->moveInDate = $moveInDate;
 
         return $this;
     }
@@ -75,7 +95,7 @@ class Apartment
      */
     public function getMoveInDate()
     {
-        return $this->move_in_date;
+        return $this->moveInDate;
     }
 
     /**
@@ -196,69 +216,6 @@ class Apartment
     public function getEmail()
     {
         return $this->email;
-    }
-
-    /**
-     * Create apartment
-     *
-     * @param array $data
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
-     *
-     * @return Apartment
-     */
-    public function create(array $data, $manager) {
-
-        $this->setMoveInDate($data["move_in_date"]);
-        $this->setStreet($data['street']);
-        $this->setPostCode($data['post_code']);
-        $this->setTown($data['town']);
-        $this->setCountry($data['country']);
-        $this->setEmail($data['email']);
-
-        $manager->persist($this);
-        $manager->flush();
-
-        return $this;
-    }
-
-	/**
-	 * Update apartment
-	 *
-	 * @param array $data
-	 * @param \Doctrine\Common\Persistence\ObjectManager $manager
-	 *
-	 * @return Apartment
-	 */
-	public function update(array $data, $manager) {
-
-		$this->setMoveInDate($data["move_in_date"]);
-		$this->setStreet($data['street']);
-		$this->setPostCode($data['post_code']);
-		$this->setTown($data['town']);
-		$this->setCountry($data['country']);
-		$this->setEmail($data['email']);
-
-		$manager->flush();
-
-		return $this;
-	}
-
-    /**
-     * Delete apartment
-     *
-     * @param integer id
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
-     *
-     * @return boolean
-     */
-    public function delete($id, $manager) {
-
-        $apartment = $manager->getRepository('AppBundle:Apartment')->find($id);
-
-        $manager->remove($apartment);
-        $manager->flush();
-
-        return true;
     }
 }
 

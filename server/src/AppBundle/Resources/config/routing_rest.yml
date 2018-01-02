@@ -1,3 +1,0 @@
-api:
-  type : rest
-  resource: "AppBundle:Api"

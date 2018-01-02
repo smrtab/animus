@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use Mockery\Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -12,17 +11,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\View\View;
 use AppBundle\Entity\Apartment;
-use Monolog\Logger;
 use AppBundle\Controller\TokenAuthenticatedController;
 
 class ApiController extends FOSRestController implements TokenAuthenticatedController
 {
-
-	private $logger;
-
-	public function __construct(){
-		$this->logger = new Logger("api");
-	}
 
     /**
      * @Rest\Get("api/apartments")
@@ -35,9 +27,10 @@ class ApiController extends FOSRestController implements TokenAuthenticatedContr
 		    if (!$result) {
 			    return new View([], Response::HTTP_OK);
 		    }
+
 		    return $result;
 	    } catch(\Exception $e) {
-		    $this->logger->critical("Got exception ".$e->getMessage());
+		    $this->get("logger")->critical("Got exception ".$e->getMessage());
 		    return new View([
 			    'status'=>Response::HTTP_INTERNAL_SERVER_ERROR,
 			    'message'=>$e->getMessage()
@@ -47,7 +40,9 @@ class ApiController extends FOSRestController implements TokenAuthenticatedContr
     }
 
     /**
+     * @var integer $id
      * @Rest\Get("api/apartments/{id}")
+     * @return Apartment $result
      */
     public function getApartmentAction($id)
     {
@@ -58,7 +53,7 @@ class ApiController extends FOSRestController implements TokenAuthenticatedContr
 		    }
 		    return $result;
 	    } catch (\Exception $e) {
-		    $this->logger->critical("Got exception ".$e->getMessage());
+		    $this->get("logger")->critical("Got exception ".$e->getMessage());
 		    return new View([
 			    'status'=>Response::HTTP_INTERNAL_SERVER_ERROR,
 			    'message'=>$e->getMessage()
@@ -67,54 +62,38 @@ class ApiController extends FOSRestController implements TokenAuthenticatedContr
     }
 
     /**
+     * @var Request $request
      * @Rest\Post("api/apartment/add")
+     * @return Apartment $apartment
      */
     public function setApartmentAction(Request $request)
     {
         try {
 
-            if (null == $request->get('move_in_date'))
-                throw new \Exception("move_in_date must be present", 500);
-
-            if (null == $request->get('street'))
-                throw new \Exception("street must be present", 500);
-
-            if (null == $request->get('post_code'))
-                throw new \Exception("post_code must be present", 500);
-
-            if (null == $request->get('town'))
-                throw new \Exception("town must be present", 500);
-
-            if (null == $request->get('country'))
-                throw new \Exception("country must be present", 500);
-
-            if (null == $request->get('email'))
-                throw new \Exception("email must be present", 500);
-
             $manager = $this->getDoctrine()->getManager();
 
             $apartment = new Apartment();
-            $result = $apartment->create([
-                'move_in_date'  => new \DateTime($request->get('move_in_date')),
-                'street'        => $request->get('street'),
-                'post_code'     => $request->get('post_code'),
-                'town'          => $request->get('town'),
-                'country'       => $request->get('country'),
-                'email'         => $request->get('email')
-            ], $manager);
+	        $apartment->setMoveInDate(new \DateTime($request->get('move_in_date')));
+	        $apartment->setStreet($request->get('street'));
+	        $apartment->setPostCode($request->get('post_code'));
+	        $apartment->setTown($request->get('town'));
+	        $apartment->setCountry($request->get('country'));
+	        $apartment->setEmail($request->get('email'));
 
-            if (!$result->getId()) {
+	        $manager->persist($apartment);
+	        $manager->flush();
+
+            if (!$apartment->getId()) {
                 throw $this->createNotFoundException("Unexpected behavior while saving", Response::HTTP_INTERNAL_SERVER_ERROR);
             }
 
 	        $body = $this->renderView(
 		        'Emails/notification.html.twig',
-		        array('id' => $result->getId())
+		        array('id' => $apartment->getId())
 	        );
 
 	        $headers = [
-		        'From: Animus <no_reply@animus.com>',
-	            'Cc: birthdayarchive@example.com'
+		        'From: Animus <no_reply@animus.com>'
 		    ];
 
 	        mail($request->get('email'), 'New appartment added', $body, implode("\r\n", $headers));
@@ -122,7 +101,7 @@ class ApiController extends FOSRestController implements TokenAuthenticatedContr
             return $apartment;
 
         } catch(\Exception $e) {
-	        $this->logger->critical("Got exception ".$e->getMessage());
+	        $this->get("logger")->critical("Got exception ".$e->getMessage());
 	        return new View([
 	        	'status'=>Response::HTTP_INTERNAL_SERVER_ERROR,
 		        'message'=>$e->getMessage()
@@ -132,32 +111,13 @@ class ApiController extends FOSRestController implements TokenAuthenticatedContr
     }
 
 	/**
+	 * @var Request $request
 	 * @Rest\Put("api/apartment/update")
+	 * @return Apartment $apartment*
 	 */
 	public function updateApartmentAction(Request $request)
 	{
 		try {
-
-			if (null == $request->get('id'))
-				throw new \Exception("id must be present", 500);
-
-			if (null == $request->get('move_in_date'))
-				throw new \Exception("move_in_date must be present", 500);
-
-			if (null == $request->get('street'))
-				throw new \Exception("street must be present", 500);
-
-			if (null == $request->get('post_code'))
-				throw new \Exception("post_code must be present", 500);
-
-			if (null == $request->get('town'))
-				throw new \Exception("town must be present", 500);
-
-			if (null == $request->get('country'))
-				throw new \Exception("country must be present", 500);
-
-			if (null == $request->get('email'))
-				throw new \Exception("email must be present", 500);
 
 			$id = $request->get('id');
 
@@ -168,23 +128,23 @@ class ApiController extends FOSRestController implements TokenAuthenticatedContr
 				throw $this->createAccessDeniedException("Acess denied", Response::HTTP_INTERNAL_SERVER_ERROR);
 			}
 
-			$result = $apartment->update([
-				'move_in_date'  => new \DateTime($request->get('move_in_date')),
-				'street'        => $request->get('street'),
-				'post_code'     => $request->get('post_code'),
-				'town'          => $request->get('town'),
-				'country'       => $request->get('country'),
-				'email'         => $request->get('email')
-			], $manager);
+			$apartment->setMoveInDate(new \DateTime($request->get('move_in_date')));
+			$apartment->setStreet($request->get('street'));
+			$apartment->setPostCode($request->get('post_code'));
+			$apartment->setTown($request->get('town'));
+			$apartment->setCountry($request->get('country'));
+			$apartment->setEmail($request->get('email'));
 
-			if (!$result->getId()) {
+			$manager->flush();
+
+			if (!$apartment->getId()) {
 				return new View("there are no apartments exist", Response::HTTP_NOT_FOUND);
 			}
 
 			return $apartment;
 
 		} catch(\Exception $e) {
-			$this->logger->critical("Got exception ".$e->getMessage());
+			$this->get("logger")->critical("Got exception ".$e->getMessage());
 			return new View([
 				'status'=>Response::HTTP_INTERNAL_SERVER_ERROR,
 				'message'=>$e->getMessage()
@@ -194,7 +154,9 @@ class ApiController extends FOSRestController implements TokenAuthenticatedContr
 	}
 
     /**
+     * @var integer $id
      * @Rest\Delete("api/apartment/delete/{id}")
+     * @return boolean
      */
     public function deleteApartmentAction($id)
     {
@@ -202,13 +164,15 @@ class ApiController extends FOSRestController implements TokenAuthenticatedContr
 
             $manager = $this->getDoctrine()->getManager();
 
-            $apartment = new Apartment();
-            $apartment->delete($id, $manager);
+	        $apartment = $manager->getRepository('AppBundle:Apartment')->find($id);
+
+	        $manager->remove($apartment);
+	        $manager->flush();
 
             return true;
 
         } catch(\Exception $e) {
-	        $this->logger->critical("Got exception ".$e->getMessage());
+	        $this->get("logger")->critical("Got exception ".$e->getMessage());
 	        return new View([
 		        'status'=>Response::HTTP_INTERNAL_SERVER_ERROR,
 		        'message'=>$e->getMessage()

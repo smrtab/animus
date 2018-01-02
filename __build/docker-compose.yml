@@ -37,9 +37,9 @@ services:
         dockerfile: __build/db.dockerfile
     container_name: animus_db
     volumes:
-      - pgdataf:/var/lib/postgresql/data
+      - pg_animus:/var/lib/postgresql/data
     ports:
      - "5444:5432"
 
 volumes:
-  pgdataf:
+  pg_animus:
